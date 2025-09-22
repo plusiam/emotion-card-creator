@@ -10,6 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="emotions-data.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -62,6 +63,15 @@
             color: white;
         }
         
+        .category-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .category-btn.active {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+            color: white;
+        }
+        
         .gallery-card {
             animation: fadeIn 0.5s ease;
         }
@@ -107,7 +117,7 @@
                 <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                     🎨 감정카드 크리에이터
                 </h1>
-                <p class="text-gray-600 mt-2">나만의 감정을 그림으로 표현하고 저장해보세요!</p>
+                <p class="text-gray-600 mt-2">64가지 감정으로 나의 마음을 그림으로 표현하고 저장해보세요!</p>
                 <p class="text-sm text-orange-600 mt-1">⚠️ 공용 디바이스: 작업 완료 후 반드시 다운로드하세요. 브라우저를 닫으면 데이터가 삭제됩니다.</p>
             </div>
         </div>
@@ -183,7 +193,26 @@
                     <!-- 감정 선택 -->
                     <div class="mb-6">
                         <h2 class="text-xl md:text-2xl font-bold mb-4 text-gray-800">1️⃣ 감정 선택하기</h2>
-                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 md:gap-3 max-h-64 overflow-y-auto" id="emotion-selector">
+                        
+                        <!-- 감정 검색 -->
+                        <div class="mb-3">
+                            <input type="text" id="emotion-search" placeholder="🔍 감정 검색 (예: 기쁨, 슬픔)" 
+                                class="w-full p-2 border rounded-lg text-sm" onkeyup="searchEmotions()">
+                        </div>
+                        
+                        <!-- 카테고리 탭 -->
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            <button onclick="filterCategory('all')" class="category-btn active px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">전체</button>
+                            <button onclick="filterCategory('기쁨')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😊 기쁨</button>
+                            <button onclick="filterCategory('슬픔')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😢 슬픔</button>
+                            <button onclick="filterCategory('화남')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😡 화남</button>
+                            <button onclick="filterCategory('불안')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😰 불안</button>
+                            <button onclick="filterCategory('놀람')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😲 놀람</button>
+                            <button onclick="filterCategory('기타')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">💭 기타</button>
+                        </div>
+                        
+                        <!-- 감정 목록 -->
+                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-80 overflow-y-auto p-2 border rounded-lg" id="emotion-selector">
                             <!-- 감정 버튼들이 JavaScript로 생성됩니다 -->
                         </div>
                     </div>
@@ -294,9 +323,10 @@
         <div id="dictionary-tab" class="tab-content hidden">
             <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
                 <h2 class="text-xl md:text-2xl font-bold mb-6 text-gray-800">📚 감정 사전</h2>
-                <p class="text-gray-600 mb-4">다양한 감정을 알아보고, 나의 감정을 정확히 표현해보세요!</p>
+                <p class="text-gray-600 mb-4">64가지 다양한 감정을 알아보고, 나의 감정을 정확히 표현해보세요!</p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="emotion-dictionary">
+                <!-- 감정 카테고리별 섹션 -->
+                <div id="emotion-dictionary">
                     <!-- 감정 카드들이 JavaScript로 생성됩니다 -->
                 </div>
             </div>
@@ -312,7 +342,7 @@
                     <div class="bg-purple-50 rounded-lg p-4">
                         <h3 class="text-lg font-bold mb-3 text-purple-800">📝 기본 사용법</h3>
                         <ol class="list-decimal list-inside space-y-2 text-gray-700">
-                            <li><strong>감정 선택:</strong> 오른쪽에서 현재 느끼는 감정을 선택합니다.</li>
+                            <li><strong>감정 선택:</strong> 64가지 감정 중에서 현재 느끼는 감정을 선택합니다. 검색하거나 카테고리별로 찾을 수 있어요.</li>
                             <li><strong>그림 그리기:</strong> 왼쪽 캔버스에 감정을 표현하는 그림을 그립니다.</li>
                             <li><strong>상황 기록:</strong> 언제, 어디서 이런 감정을 느꼈는지 선택합니다.</li>
                             <li><strong>저장/다운로드:</strong> 완성된 카드를 이미지나 PDF로 저장합니다.</li>
@@ -329,22 +359,28 @@
                             <li>🔄 다음 사용자를 위해 작업 후 새로고침을 권장합니다.</li>
                         </ul>
                     </div>
+                    
+                    <!-- 새로운 기능 안내 -->
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h3 class="text-lg font-bold mb-3 text-green-800">✨ 새로운 기능</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>📚 <strong>64가지 감정:</strong> 더 다양하고 정확한 감정 표현이 가능합니다.</li>
+                            <li>🔍 <strong>감정 검색:</strong> 원하는 감정을 빠르게 찾을 수 있어요.</li>
+                            <li>📂 <strong>카테고리별 정렬:</strong> 기쁨, 슬픔, 화남 등 카테고리별로 감정을 찾을 수 있습니다.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 감정 데이터
-        const emotions = [
-            { name: '기쁘다', emoji: '😊', desc: '바라는 일이 이루어져 기분이 좋고 즐겁다', color: '#FFFFE5' },
-            { name: '슬프다', emoji: '😢', desc: '서러운 일을 겪거나 불쌍한 일을 보고 울고 싶을 만큼 마음이 아프고 괴롭다', color: '#E5FFE5' },
-            { name: '화나다', emoji: '😡', desc: '마음에 들지 않거나 기분이 나빠서 불쾌하고 답답한 마음이 생기다', color: '#FFFFE5' },
-            { name: '불안하다', emoji: '😰', desc: '걱정이 되어 마음이 편하지 않다', color: '#E5E5FF' },
-            { name: '설레다', emoji: '💗', desc: '마음이 들떠서 두근거리다', color: '#E5E5FF' },
-            { name: '행복하다', emoji: '🥰', desc: '충분히 기쁘고 만족을 느끼다', color: '#FFE5E5' },
-            { name: '외롭다', emoji: '😞', desc: '혼자 있거나 기댈 곳이 없어 허전하고 쓸쓸하다', color: '#FFF5E5' }
-        ];
+        // 감정 데이터 (emotions-data.js에서 로드됨)
+        const emotions = typeof emotionsData !== 'undefined' ? emotionsData : [];
+        
+        // 현재 표시되는 감정 목록
+        let currentEmotions = emotions;
+        let currentCategory = 'all';
 
         // 전역 변수들
         let canvas, ctx;
@@ -473,7 +509,7 @@
             const container = document.getElementById('emotion-selector');
             container.innerHTML = '';
             
-            emotions.forEach((emotion, index) => {
+            currentEmotions.forEach((emotion, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'emotion-card p-2 bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-md hover:shadow-lg text-center';
                 btn.innerHTML = `
@@ -481,9 +517,55 @@
                     <div class="text-xs font-medium">${emotion.name}</div>
                 `;
                 btn.onclick = (e) => selectEmotion(emotion, e);
+                btn.setAttribute('data-name', emotion.name);
+                btn.setAttribute('data-category', emotion.category || '기타');
                 container.appendChild(btn);
             });
         }
+        
+        // 감정 검색 기능
+        window.searchEmotions = function() {
+            const searchTerm = document.getElementById('emotion-search').value.toLowerCase();
+            if (!searchTerm) {
+                if (currentCategory === 'all') {
+                    currentEmotions = emotions;
+                } else {
+                    currentEmotions = emotions.filter(e => e.category === currentCategory);
+                }
+            } else {
+                currentEmotions = emotions.filter(e => 
+                    e.name.toLowerCase().includes(searchTerm) || 
+                    e.desc.toLowerCase().includes(searchTerm)
+                );
+            }
+            createEmotionButtons();
+        };
+        
+        // 카테고리 필터 기능
+        window.filterCategory = function(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            if (category === 'all') {
+                currentEmotions = emotions;
+            } else {
+                currentEmotions = emotions.filter(e => e.category === category);
+            }
+            
+            // 검색어가 있으면 검색 결과 내에서 필터링
+            const searchTerm = document.getElementById('emotion-search').value.toLowerCase();
+            if (searchTerm) {
+                currentEmotions = currentEmotions.filter(e => 
+                    e.name.toLowerCase().includes(searchTerm) || 
+                    e.desc.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            createEmotionButtons();
+        };
 
         // 색상 팔레트 생성
         function createColorPalette() {
@@ -733,6 +815,7 @@
             document.getElementById('situation-desc').value = '';
             document.getElementById('student-name').value = '';
             document.getElementById('student-class').value = '';
+            document.getElementById('emotion-search').value = '';
         }
 
         // 카드 캔버스 생성
@@ -1006,20 +1089,54 @@
             const container = document.getElementById('emotion-dictionary');
             container.innerHTML = '';
             
+            // 카테고리별로 그룹화
+            const categories = {};
             emotions.forEach(emotion => {
-                const card = document.createElement('div');
-                card.className = 'bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition';
-                card.style.borderLeft = `5px solid ${emotion.color}`;
-                card.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        <div class="text-2xl md:text-3xl">${emotion.emoji}</div>
-                        <div class="flex-1">
-                            <h3 class="text-lg md:text-xl font-bold mb-2">${emotion.name}</h3>
-                            <p class="text-sm text-gray-600">${emotion.desc}</p>
+                const category = emotion.category || '기타';
+                if (!categories[category]) {
+                    categories[category] = [];
+                }
+                categories[category].push(emotion);
+            });
+            
+            // 카테고리별 섹션 생성
+            Object.keys(categories).forEach(category => {
+                const section = document.createElement('div');
+                section.className = 'mb-8';
+                
+                // 카테고리 제목
+                const title = document.createElement('h3');
+                title.className = 'text-lg font-bold mb-4 text-gray-700';
+                const categoryEmoji = {
+                    '기쁨': '😊', '슬픔': '😢', '화남': '😡', 
+                    '불안': '😰', '놀람': '😲', '부끄러움': '😳',
+                    '감사': '🙏', '기타': '💭'
+                };
+                title.innerHTML = `${categoryEmoji[category] || '💭'} ${category} (${categories[category].length}개)`;
+                section.appendChild(title);
+                
+                // 감정 카드들
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
+                
+                categories[category].forEach(emotion => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 shadow-lg hover:shadow-xl transition';
+                    card.style.borderLeft = `5px solid ${emotion.color}`;
+                    card.innerHTML = `
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl md:text-3xl">${emotion.emoji}</div>
+                            <div class="flex-1">
+                                <h4 class="text-base md:text-lg font-bold mb-1">${emotion.name}</h4>
+                                <p class="text-sm text-gray-600">${emotion.desc}</p>
+                            </div>
                         </div>
-                    </div>
-                `;
-                container.appendChild(card);
+                    `;
+                    grid.appendChild(card);
+                });
+                
+                section.appendChild(grid);
+                container.appendChild(section);
             });
         }
 

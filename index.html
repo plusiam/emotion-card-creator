@@ -114,16 +114,16 @@
 
         <!-- 탭 네비게이션 -->
         <div class="flex flex-wrap justify-center gap-2 mb-8 no-print">
-            <button onclick="switchTab(event, 'create')" class="tab-btn active px-4 py-2 md:px-6 md:py-3 rounded-full bg-white shadow-lg font-medium text-sm md:text-base">
+            <button onclick="window.switchTab(event, 'create')" class="tab-btn active px-4 py-2 md:px-6 md:py-3 rounded-full bg-white shadow-lg font-medium text-sm md:text-base">
                 🎨 카드 만들기
             </button>
-            <button onclick="switchTab(event, 'gallery')" class="tab-btn px-4 py-2 md:px-6 md:py-3 rounded-full bg-white shadow-lg font-medium text-sm md:text-base">
+            <button onclick="window.switchTab(event, 'gallery')" class="tab-btn px-4 py-2 md:px-6 md:py-3 rounded-full bg-white shadow-lg font-medium text-sm md:text-base">
                 🖼️ 오늘의 작품
             </button>
-            <button onclick="switchTab(event, 'dictionary')" class="tab-btn px-4 py-2 md:px-6 md:py-3 rounded-full bg-white shadow-lg font-medium text-sm md:text-base">
+            <button onclick="window.switchTab(event, 'dictionary')" class="tab-btn px-4 py-2 md:px-6 md:py-3 rounded-full bg-white shadow-lg font-medium text-sm md:text-base">
                 📚 감정 사전
             </button>
-            <button onclick="switchTab(event, 'help')" class="tab-btn px-4 py-2 md:px-6 md:py-3 rounded-full bg-white shadow-lg font-medium text-sm md:text-base">
+            <button onclick="window.switchTab(event, 'help')" class="tab-btn px-4 py-2 md:px-6 md:py-3 rounded-full bg-white shadow-lg font-medium text-sm md:text-base">
                 ❓ 사용법
             </button>
         </div>
@@ -137,23 +137,23 @@
                     
                     <!-- 도구 버튼들 -->
                     <div class="flex flex-wrap gap-2 md:gap-3 mb-4">
-                        <button onclick="setTool(event, 'pen')" class="tool-btn px-3 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition text-sm md:text-base">
+                        <button onclick="window.setTool(event, 'pen')" class="tool-btn px-3 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition text-sm md:text-base">
                             ✏️ 펜
                         </button>
-                        <button onclick="setTool(event, 'eraser')" class="tool-btn px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition text-sm md:text-base">
+                        <button onclick="window.setTool(event, 'eraser')" class="tool-btn px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition text-sm md:text-base">
                             🧹 지우개
                         </button>
                         <button onclick="document.getElementById('imageUpload').click()" class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm md:text-base">
                             📷 사진
                         </button>
-                        <button onclick="clearCanvas()" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-sm md:text-base">
+                        <button onclick="window.clearCanvas()" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition text-sm md:text-base">
                             🗑️ 전체삭제
                         </button>
-                        <button onclick="undo()" class="px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition text-sm md:text-base">
+                        <button onclick="window.undo()" class="px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition text-sm md:text-base">
                             ↩️ 되돌리기
                         </button>
                     </div>
-                    <input type="file" id="imageUpload" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                    <input type="file" id="imageUpload" accept="image/*" class="hidden" onchange="window.handleImageUpload(event)">
 
                     <!-- 색상 팔레트 -->
                     <div class="mb-4">
@@ -215,10 +215,10 @@
                         <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-700 mb-1">⏰ 언제</label>
                             <div class="flex flex-wrap gap-2">
-                                <button onclick="toggleTag(event, 'time', '아침')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🌅 아침</button>
-                                <button onclick="toggleTag(event, 'time', '점심')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">☀️ 점심</button>
-                                <button onclick="toggleTag(event, 'time', '저녁')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🌆 저녁</button>
-                                <button onclick="toggleTag(event, 'time', '밤')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🌙 밤</button>
+                                <button onclick="window.toggleTag(event, 'time', '아침')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🌅 아침</button>
+                                <button onclick="window.toggleTag(event, 'time', '점심')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">☀️ 점심</button>
+                                <button onclick="window.toggleTag(event, 'time', '저녁')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🌆 저녁</button>
+                                <button onclick="window.toggleTag(event, 'time', '밤')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🌙 밤</button>
                             </div>
                         </div>
                         
@@ -226,9 +226,9 @@
                         <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-700 mb-1">📍 어디서</label>
                             <div class="flex flex-wrap gap-2">
-                                <button onclick="toggleTag(event, 'place', '집')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🏠 집</button>
-                                <button onclick="toggleTag(event, 'place', '학교')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🏫 학교</button>
-                                <button onclick="toggleTag(event, 'place', '밖')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🌳 밖</button>
+                                <button onclick="window.toggleTag(event, 'place', '집')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🏠 집</button>
+                                <button onclick="window.toggleTag(event, 'place', '학교')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🏫 학교</button>
+                                <button onclick="window.toggleTag(event, 'place', '밖')" class="tag-btn px-3 py-1 bg-gray-100 rounded-lg hover:bg-purple-100 text-sm">🌳 밖</button>
                             </div>
                         </div>
                         
@@ -251,7 +251,786 @@
 
                     <!-- 저장 버튼들 -->
                     <div class="flex flex-wrap gap-3">
-                        <button onclick="saveToGallery()" class="px-4 py-2 bg-purple-500 text-white rounded-lg font-bold hover:bg-purple-600 transition">
+                        <button onclick="window.saveToGallery()" class="px-4 py-2 bg-purple-500 text-white rounded-lg font-bold hover:bg-purple-600 transition">
                             💾 갤러리에 추가
                         </button>
-                        <button onclick="downloadAs
+                        <button onclick="window.downloadAsImage()" class="px-4 py-2 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition">
+                            🖼️ 이미지 다운로드
+                        </button>
+                        <button onclick="window.downloadAsPDF()" class="px-4 py-2 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition">
+                            📄 PDF 다운로드
+                        </button>
+                        <button onclick="window.printCard()" class="px-4 py-2 bg-gray-500 text-white rounded-lg font-bold hover:bg-gray-600 transition">
+                            🖨️ 인쇄
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 갤러리 탭 -->
+        <div id="gallery-tab" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-gray-800">🖼️ 오늘의 작품들</h2>
+                        <p class="text-sm text-gray-500 mt-1">브라우저를 닫으면 삭제됩니다. 꼭 다운로드하세요!</p>
+                    </div>
+                    <button onclick="window.downloadAllAsPDF()" class="px-4 py-2 bg-purple-500 text-white rounded-lg font-medium hover:bg-purple-600 transition">
+                        📑 전체 PDF 다운로드
+                    </button>
+                </div>
+                <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- 저장된 카드들이 여기에 표시됩니다 -->
+                </div>
+                <div id="empty-gallery" class="text-center py-12 text-gray-400">
+                    <p class="text-xl">아직 만든 카드가 없어요!</p>
+                    <p class="mt-2">카드 만들기 탭에서 감정카드를 만들어보세요 🎨</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 감정 사전 탭 -->
+        <div id="dictionary-tab" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+                <h2 class="text-xl md:text-2xl font-bold mb-6 text-gray-800">📚 감정 사전</h2>
+                <p class="text-gray-600 mb-4">다양한 감정을 알아보고, 나의 감정을 정확히 표현해보세요!</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="emotion-dictionary">
+                    <!-- 감정 카드들이 JavaScript로 생성됩니다 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 사용법 탭 -->
+        <div id="help-tab" class="tab-content hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+                <h2 class="text-xl md:text-2xl font-bold mb-6 text-gray-800">❓ 사용법</h2>
+                
+                <div class="space-y-6">
+                    <!-- 기본 사용법 -->
+                    <div class="bg-purple-50 rounded-lg p-4">
+                        <h3 class="text-lg font-bold mb-3 text-purple-800">📝 기본 사용법</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                            <li><strong>감정 선택:</strong> 오른쪽에서 현재 느끼는 감정을 선택합니다.</li>
+                            <li><strong>그림 그리기:</strong> 왼쪽 캔버스에 감정을 표현하는 그림을 그립니다.</li>
+                            <li><strong>상황 기록:</strong> 언제, 어디서 이런 감정을 느꼈는지 선택합니다.</li>
+                            <li><strong>저장/다운로드:</strong> 완성된 카드를 이미지나 PDF로 저장합니다.</li>
+                        </ol>
+                    </div>
+
+                    <!-- 주의사항 -->
+                    <div class="bg-red-50 rounded-lg p-4">
+                        <h3 class="text-lg font-bold mb-3 text-red-800">⚠️ 주의사항</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li>🚨 <strong>공용 디바이스입니다!</strong> 개인정보를 입력하지 마세요.</li>
+                            <li>💾 브라우저를 닫으면 모든 작품이 삭제됩니다.</li>
+                            <li>⬇️ 작업 완료 후 반드시 다운로드하세요.</li>
+                            <li>🔄 다음 사용자를 위해 작업 후 새로고침을 권장합니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('🚀 감정카드 크리에이터 시작');
+        
+        // 감정 데이터
+        const emotions = [
+            { name: '기쁘다', emoji: '😊', desc: '바라는 일이 이루어져 기분이 좋고 즐겁다', color: '#FFFFE5' },
+            { name: '슬프다', emoji: '😢', desc: '서러운 일을 겪거나 불쌍한 일을 보고 울고 싶을 만큼 마음이 아프고 괴롭다', color: '#E5FFE5' },
+            { name: '화나다', emoji: '😡', desc: '마음에 들지 않거나 기분이 나빠서 불쾌하고 답답한 마음이 생기다', color: '#FFFFE5' },
+            { name: '불안하다', emoji: '😰', desc: '걱정이 되어 마음이 편하지 않다', color: '#E5E5FF' },
+            { name: '설레다', emoji: '💗', desc: '마음이 들떠서 두근거리다', color: '#E5E5FF' },
+            { name: '행복하다', emoji: '🥰', desc: '충분히 기쁘고 만족을 느끼다', color: '#FFE5E5' },
+            { name: '외롭다', emoji: '😞', desc: '혼자 있거나 기댈 곳이 없어 허전하고 쓸쓸하다', color: '#FFF5E5' },
+            { name: '감격스럽다', emoji: '🥺', desc: '뿌듯하거나 기뻐서 가슴이 뭉클해지다', color: '#FFE5E5' },
+            { name: '걱정스럽다', emoji: '😟', desc: '걱정이 되어 편하지 않다', color: '#E5E5FF' },
+            { name: '고맙다', emoji: '🙏', desc: '남이 친절하게 대해 주거나 도움을 주어서 흐뭇하고 즐겁다', color: '#FFE5F5' },
+            { name: '괜찮다', emoji: '😌', desc: '걱정이 되거나 문제가 될 것이 없다', color: '#E5FFE5' },
+            { name: '괴롭다', emoji: '😣', desc: '아프고 힘들다. 몸이나 마음이 편하지 않고 고통스럽다', color: '#FFE5E5' },
+            { name: '궁금하다', emoji: '🤔', desc: '모르는 것을 알고 싶어 몹시 답답하다', color: '#FFF5E5' },
+            { name: '그립다', emoji: '😢', desc: '보고 싶거나 만나고 싶다', color: '#E5F5FF' },
+            { name: '긴장하다', emoji: '😰', desc: '마음이 들떠서 두근거리다', color: '#E5E5FF' },
+            { name: '놀라다', emoji: '😲', desc: '뜻밖의 일이나 무서움에 가슴이 두근거리다', color: '#E5FFE5' },
+            { name: '답답하다', emoji: '😤', desc: '일이 잘되지 않아서 애가 타다', color: '#FFF5E5' },
+            { name: '무섭다', emoji: '😱', desc: '걱정하는 일이 벌어질까 불안하다', color: '#FFE5F5' },
+            { name: '미안하다', emoji: '😔', desc: '다른 사람에 대해 마음이 편하지 않고 부끄럽다', color: '#E5FFE5' },
+            { name: '벅차다', emoji: '🥹', desc: '기쁨이나 희망이 넘칠 듯이 가득하다', color: '#FFF5E5' },
+            { name: '부끄럽다', emoji: '😊', desc: '잘못을 저질러서 창피하다', color: '#E5F5FF' },
+            { name: '불쾌하다', emoji: '😒', desc: '못마땅하여 기분이 좋지 않다', color: '#FFE5F5' },
+            { name: '뿌듯하다', emoji: '😊', desc: '기쁘고 흐뭇한 느낌으로 가득하다', color: '#FFF5E5' },
+            { name: '상쾌하다', emoji: '😄', desc: '기분이 시원하고 산뜻하다', color: '#FFFFE5' },
+            { name: '속상하다', emoji: '😣', desc: '걱정스럽거나 화나는 일로 마음이 편하지 않고 괴롭다', color: '#FFE5F5' },
+            { name: '신기하다', emoji: '✨', desc: '믿을 수 없을 정도로 놀랍고 이상하다', color: '#FFE5E5' },
+            { name: '신나다', emoji: '🎉', desc: '재미있고 즐거워서 기분이 좋다', color: '#FFF5E5' },
+            { name: '아프다', emoji: '💔', desc: '마음이 편하지 않고 괴롭다', color: '#FFFFE5' },
+            { name: '억울하다', emoji: '😤', desc: '아무 잘못 없이 혼나거나 벌을 받아서 속이 상하고 분하다', color: '#E5FFE5' },
+            { name: '우울하다', emoji: '😔', desc: '걱정되거나 답답하여 활기가 없다', color: '#E5F5FF' },
+            { name: '즐겁다', emoji: '😊', desc: '즐겁고 유쾌하다', color: '#FFF5E5' },
+            { name: '짜증스럽다', emoji: '😤', desc: '보기에 못마땅한 데가 있다', color: '#E5F5FF' },
+            { name: '편안하다', emoji: '😌', desc: '몸과 마음이 힘들지 않고 좋다', color: '#E5FFE5' }
+        ];
+
+        // 전역 변수들
+        let canvas, ctx;
+        let isDrawing = false;
+        let currentTool = 'pen';
+        let currentColor = '#000000';
+        let currentSize = 5;
+        let selectedEmotion = null;
+        let selectedTags = {
+            time: null,
+            place: null
+        };
+        let drawHistory = [];
+        let historyStep = -1;
+        let sessionGallery = [];
+
+        // 색상 팔레트
+        const colors = [
+            '#000000', '#FFFFFF', '#FF0000', '#FF7F00', '#FFFF00', '#00FF00',
+            '#0000FF', '#4B0082', '#9400D3', '#FF1493', '#FFB6C1', '#87CEEB'
+        ];
+
+        // 초기화 함수
+        function init() {
+            console.log('✅ 초기화 시작');
+            
+            try {
+                initCanvas();
+                createEmotionButtons();
+                createColorPalette();
+                loadGallery();
+                createEmotionDictionary();
+                
+                // 감정 강도 슬라이더 이벤트
+                document.getElementById('emotion-intensity').addEventListener('input', function(e) {
+                    document.getElementById('intensity-value').textContent = e.target.value;
+                });
+                
+                // 펜 크기 슬라이더 이벤트
+                document.getElementById('pen-size').addEventListener('input', function(e) {
+                    currentSize = e.target.value;
+                    document.getElementById('size-value').textContent = e.target.value;
+                });
+                
+                // 페이지 떠날 때 경고
+                window.addEventListener('beforeunload', function(e) {
+                    if (sessionGallery.length > 0) {
+                        e.preventDefault();
+                        e.returnValue = '저장하지 않은 작품이 있습니다. 정말 나가시겠습니까?';
+                    }
+                });
+                
+                console.log('✅ 초기화 완료');
+            } catch (error) {
+                console.error('❌ 초기화 오류:', error);
+            }
+        }
+
+        // 캔버스 초기화
+        function initCanvas() {
+            console.log('📐 캔버스 초기화');
+            canvas = document.getElementById('drawingCanvas');
+            ctx = canvas.getContext('2d');
+            
+            canvas.width = 600;
+            canvas.height = 400;
+            
+            // 배경색 설정
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 이벤트 리스너 추가 (표준 이벤트 사용)
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            canvas.addEventListener('touchstart', handleTouch);
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            // 터치 스크롤 방지
+            canvas.addEventListener('touchstart', (e) => e.preventDefault());
+            
+            saveHistory();
+        }
+
+        // 터치 이벤트 처리
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 'mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        // 감정 버튼 생성
+        function createEmotionButtons() {
+            console.log('😊 감정 버튼 생성');
+            const container = document.getElementById('emotion-selector');
+            container.innerHTML = '';
+            
+            emotions.forEach((emotion, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'emotion-card p-2 bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-md hover:shadow-lg text-center';
+                btn.innerHTML = `
+                    <div class="text-xl mb-1">${emotion.emoji}</div>
+                    <div class="text-xs font-medium">${emotion.name}</div>
+                `;
+                btn.onclick = (e) => selectEmotion(emotion, e);
+                container.appendChild(btn);
+            });
+        }
+
+        // 색상 팔레트 생성
+        function createColorPalette() {
+            console.log('🎨 색상 팔레트 생성');
+            const container = document.getElementById('color-palette');
+            container.innerHTML = '';
+            colors.forEach(color => {
+                const btn = document.createElement('button');
+                btn.className = 'color-btn w-8 h-8 rounded-full border-2 border-gray-300';
+                btn.style.backgroundColor = color;
+                btn.onclick = (e) => setColor(color, e);
+                btn.dataset.color = color;
+                if (color === currentColor) {
+                    btn.classList.add('active');
+                }
+                container.appendChild(btn);
+            });
+        }
+
+        // 감정 선택
+        function selectEmotion(emotion, event) {
+            selectedEmotion = emotion;
+            document.getElementById('selected-emotion-display').classList.remove('hidden');
+            document.getElementById('selected-emotion-text').textContent = `${emotion.emoji} ${emotion.name}`;
+            document.getElementById('selected-emotion-desc').textContent = emotion.desc;
+            
+            // 버튼 스타일 업데이트
+            document.querySelectorAll('.emotion-card').forEach((card) => {
+                card.classList.remove('selected');
+            });
+            if (event && event.target) {
+                event.target.closest('.emotion-card').classList.add('selected');
+            }
+        }
+
+        // 태그 토글
+        window.toggleTag = function(event, category, value) {
+            const button = event.target.closest('.tag-btn');
+            
+            if (selectedTags[category] === value) {
+                selectedTags[category] = null;
+                button.classList.remove('bg-purple-200');
+                button.classList.add('bg-gray-100');
+            } else {
+                // 같은 카테고리의 다른 버튼들 초기화
+                button.parentElement.querySelectorAll('.tag-btn').forEach(btn => {
+                    btn.classList.remove('bg-purple-200');
+                    btn.classList.add('bg-gray-100');
+                });
+                
+                selectedTags[category] = value;
+                button.classList.remove('bg-gray-100');
+                button.classList.add('bg-purple-200');
+            }
+        }
+
+        // 도구 설정
+        window.setTool = function(event, tool) {
+            currentTool = tool;
+            const button = event.target.closest('.tool-btn');
+            
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-purple-500');
+            });
+            button.classList.add('ring-2', 'ring-purple-500');
+            
+            if (tool === 'eraser') {
+                canvas.style.cursor = 'grab';
+            } else {
+                canvas.style.cursor = 'crosshair';
+            }
+        }
+
+        // 그리기 시작
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineWidth = currentSize;
+        }
+
+        // 그리기
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            
+            if (currentTool === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineWidth = currentSize * 3;
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = currentColor;
+                ctx.lineWidth = currentSize;
+            }
+            
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        // 그리기 중지
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+                ctx.beginPath();
+                ctx.globalCompositeOperation = 'source-over';
+                saveHistory();
+            }
+        }
+
+        // 색상 설정
+        function setColor(color, event) {
+            currentColor = color;
+            currentTool = 'pen';
+            
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+        }
+
+        // 캔버스 지우기
+        window.clearCanvas = function() {
+            if (!confirm('그림을 모두 지우시겠습니까?')) return;
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            saveHistory();
+        }
+
+        // 실행 취소
+        window.undo = function() {
+            if (historyStep > 0) {
+                historyStep--;
+                const canvasPic = new Image();
+                canvasPic.src = drawHistory[historyStep];
+                canvasPic.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(canvasPic, 0, 0);
+                }
+            }
+        }
+
+        // 히스토리 저장
+        function saveHistory() {
+            historyStep++;
+            if (historyStep < drawHistory.length) {
+                drawHistory.length = historyStep;
+            }
+            drawHistory.push(canvas.toDataURL('image/jpeg', 0.8));
+            
+            if (drawHistory.length > 10) {
+                drawHistory.shift();
+                historyStep--;
+            }
+        }
+
+        // 이미지 업로드 처리
+        window.handleImageUpload = async function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+                    const x = (canvas.width - img.width * scale) / 2;
+                    const y = (canvas.height - img.height * scale) / 2;
+                    
+                    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+                    saveHistory();
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // 갤러리에 저장
+        window.saveToGallery = function() {
+            if (!selectedEmotion) {
+                alert('먼저 감정을 선택해주세요!');
+                return;
+            }
+            
+            const card = {
+                id: Date.now(),
+                emotion: selectedEmotion.name,
+                emoji: selectedEmotion.emoji,
+                desc: selectedEmotion.desc,
+                image: canvas.toDataURL('image/jpeg', 0.9),
+                intensity: document.getElementById('emotion-intensity').value,
+                tags: { ...selectedTags },
+                situation: document.getElementById('situation-desc').value,
+                studentName: document.getElementById('student-name').value,
+                studentClass: document.getElementById('student-class').value,
+                date: new Date().toISOString()
+            };
+            
+            sessionGallery.push(card);
+            alert('갤러리에 추가되었습니다!');
+            loadGallery();
+            resetForm();
+        }
+
+        // 폼 초기화
+        function resetForm() {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawHistory = [];
+            historyStep = -1;
+            saveHistory();
+            
+            selectedEmotion = null;
+            selectedTags = { time: null, place: null };
+            document.getElementById('selected-emotion-display').classList.add('hidden');
+            document.querySelectorAll('.emotion-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelectorAll('.tag-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-200');
+                btn.classList.add('bg-gray-100');
+            });
+            
+            document.getElementById('emotion-intensity').value = 5;
+            document.getElementById('intensity-value').textContent = '5';
+            document.getElementById('situation-desc').value = '';
+            document.getElementById('student-name').value = '';
+            document.getElementById('student-class').value = '';
+        }
+
+        // 이미지 다운로드
+        window.downloadAsImage = function() {
+            if (!selectedEmotion) {
+                alert('먼저 감정을 선택해주세요!');
+                return;
+            }
+            
+            const cardCanvas = createCardCanvas();
+            const link = document.createElement('a');
+            const studentName = document.getElementById('student-name').value || '학생';
+            link.download = `감정카드_${selectedEmotion.name}_${studentName}_${Date.now()}.jpg`;
+            link.href = cardCanvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+        }
+
+        // PDF 다운로드
+        window.downloadAsPDF = function() {
+            if (!selectedEmotion) {
+                alert('먼저 감정을 선택해주세요!');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            const cardCanvas = createCardCanvas();
+            
+            const imgData = cardCanvas.toDataURL('image/jpeg', 1.0);
+            const imgWidth = 180;
+            const imgHeight = (cardCanvas.height / cardCanvas.width) * imgWidth;
+            
+            pdf.addImage(imgData, 'JPEG', 15, 15, imgWidth, imgHeight);
+            
+            const studentName = document.getElementById('student-name').value || '학생';
+            pdf.save(`감정카드_${selectedEmotion.name}_${studentName}.pdf`);
+        }
+
+        // 카드 캔버스 생성
+        function createCardCanvas() {
+            const cardCanvas = document.createElement('canvas');
+            cardCanvas.width = 800;
+            cardCanvas.height = 600;
+            const cardCtx = cardCanvas.getContext('2d');
+            
+            // 배경
+            cardCtx.fillStyle = '#f9fafb';
+            cardCtx.fillRect(0, 0, cardCanvas.width, cardCanvas.height);
+            
+            // 카드 배경
+            cardCtx.fillStyle = 'white';
+            cardCtx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+            cardCtx.shadowBlur = 10;
+            cardCtx.fillRect(20, 20, 760, 560);
+            cardCtx.shadowBlur = 0;
+            
+            // 그림 영역
+            const scale = Math.min(520 / canvas.width, 350 / canvas.height);
+            const scaledWidth = canvas.width * scale;
+            const scaledHeight = canvas.height * scale;
+            const x = 40 + (520 - scaledWidth) / 2;
+            const y = 40 + (350 - scaledHeight) / 2;
+            
+            cardCtx.strokeStyle = '#e5e7eb';
+            cardCtx.lineWidth = 2;
+            cardCtx.strokeRect(39, 39, 522, 352);
+            cardCtx.drawImage(canvas, x, y, scaledWidth, scaledHeight);
+            
+            // 감정 정보 영역
+            cardCtx.fillStyle = '#f3f4f6';
+            cardCtx.fillRect(40, 410, 520, 150);
+            
+            // 텍스트 스타일 설정
+            cardCtx.textAlign = 'left';
+            cardCtx.fillStyle = '#1f2937';
+            
+            // 감정 이모지와 이름
+            cardCtx.font = 'bold 36px Noto Sans KR, sans-serif';
+            cardCtx.fillText(`${selectedEmotion.emoji} ${selectedEmotion.name}`, 60, 460);
+            
+            // 감정 설명
+            cardCtx.font = '18px Noto Sans KR, sans-serif';
+            cardCtx.fillStyle = '#6b7280';
+            cardCtx.fillText(selectedEmotion.desc, 60, 490);
+            
+            // 강도와 태그
+            if (document.getElementById('emotion-intensity').value) {
+                cardCtx.font = '16px Noto Sans KR, sans-serif';
+                cardCtx.fillStyle = '#9ca3af';
+                const intensity = document.getElementById('emotion-intensity').value;
+                cardCtx.fillText(`감정 강도: ${'●'.repeat(intensity)}${'○'.repeat(10-intensity)}`, 60, 520);
+            }
+            
+            // 태그 정보
+            let tagText = '';
+            if (selectedTags.time) tagText += selectedTags.time + ' ';
+            if (selectedTags.place) tagText += selectedTags.place + ' ';
+            if (tagText) {
+                cardCtx.fillText(`상황: ${tagText}`, 60, 545);
+            }
+            
+            // 날짜
+            cardCtx.textAlign = 'right';
+            cardCtx.fillText(new Date().toLocaleDateString('ko-KR'), 540, 545);
+            
+            return cardCanvas;
+        }
+
+        // 인쇄
+        window.printCard = function() {
+            if (!selectedEmotion) {
+                alert('먼저 감정을 선택해주세요!');
+                return;
+            }
+            
+            const cardCanvas = createCardCanvas();
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>감정카드 인쇄</title>
+                    <style>
+                        @media print {
+                            body { margin: 0; }
+                            img { max-width: 100%; height: auto; }
+                        }
+                        body {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-height: 100vh;
+                            margin: 0;
+                            background: #f3f4f6;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <img src="${cardCanvas.toDataURL()}" />
+                    <script>window.print(); setTimeout(() => window.close(), 500);</script>
+                </body>
+                </html>
+            `);
+        }
+
+        // 갤러리 로드
+        function loadGallery() {
+            const container = document.getElementById('gallery-grid');
+            const emptyMsg = document.getElementById('empty-gallery');
+            
+            if (sessionGallery.length === 0) {
+                container.style.display = 'none';
+                emptyMsg.style.display = 'block';
+            } else {
+                container.style.display = 'grid';
+                emptyMsg.style.display = 'none';
+                
+                container.innerHTML = '';
+                sessionGallery.forEach((card, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'gallery-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition cursor-pointer';
+                    
+                    let tagsHtml = '';
+                    if (card.tags.time) tagsHtml += `<span class="tag-badge bg-yellow-100 text-yellow-700">${card.tags.time}</span>`;
+                    if (card.tags.place) tagsHtml += `<span class="tag-badge bg-blue-100 text-blue-700">${card.tags.place}</span>`;
+                    
+                    div.innerHTML = `
+                        <img src="${card.image}" class="w-full h-32 object-cover">
+                        <div class="p-3">
+                            <div class="text-lg font-bold mb-1">${card.emoji} ${card.emotion}</div>
+                            ${card.studentName ? `<div class="text-sm text-gray-600">${card.studentClass || ''} ${card.studentName}</div>` : ''}
+                            ${tagsHtml ? `<div class="mt-1">${tagsHtml}</div>` : ''}
+                            <div class="mt-2 flex gap-2">
+                                <button onclick="window.downloadGalleryCard(${index})" class="text-xs px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+                                    📥 다운로드
+                                </button>
+                                <button onclick="window.deleteGalleryCard(${index})" class="text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                                    🗑️ 삭제
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+        }
+
+        // 갤러리 카드 다운로드
+        window.downloadGalleryCard = function(index) {
+            const card = sessionGallery[index];
+            const link = document.createElement('a');
+            link.download = `감정카드_${card.emotion}_${card.studentName || '학생'}.jpg`;
+            link.href = card.image;
+            link.click();
+        }
+
+        // 갤러리 카드 삭제
+        window.deleteGalleryCard = function(index) {
+            if (confirm('이 카드를 삭제하시겠습니까?')) {
+                sessionGallery.splice(index, 1);
+                loadGallery();
+            }
+        }
+
+        // 전체 PDF 다운로드
+        window.downloadAllAsPDF = async function() {
+            if (sessionGallery.length === 0) {
+                alert('갤러리에 카드가 없습니다.');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            
+            for (let i = 0; i < sessionGallery.length; i++) {
+                const card = sessionGallery[i];
+                
+                if (i > 0) {
+                    pdf.addPage();
+                }
+                
+                // 이미지 추가
+                pdf.addImage(card.image, 'JPEG', 15, 30, 180, 120);
+                
+                // 정보 추가
+                pdf.setFontSize(12);
+                let yPos = 160;
+                
+                pdf.text(`감정: ${card.emotion}`, 15, yPos);
+                yPos += 10;
+                
+                if (card.studentName) {
+                    pdf.text(`작성자: ${card.studentClass || ''} ${card.studentName}`, 15, yPos);
+                    yPos += 10;
+                }
+                
+                if (card.intensity) {
+                    pdf.text(`감정 강도: ${card.intensity}/10`, 15, yPos);
+                    yPos += 10;
+                }
+                
+                pdf.text(`날짜: ${new Date(card.date).toLocaleDateString('ko-KR')}`, 15, yPos);
+            }
+            
+            pdf.save(`감정카드_모음_${new Date().toLocaleDateString('ko-KR')}.pdf`);
+        }
+
+        // 감정 사전 생성
+        function createEmotionDictionary() {
+            const container = document.getElementById('emotion-dictionary');
+            container.innerHTML = '';
+            
+            emotions.forEach(emotion => {
+                const card = document.createElement('div');
+                card.className = 'bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition';
+                card.style.borderLeft = `5px solid ${emotion.color}`;
+                card.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="text-2xl md:text-3xl">${emotion.emoji}</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg md:text-xl font-bold mb-2">${emotion.name}</h3>
+                            <p class="text-sm text-gray-600">${emotion.desc}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // 탭 전환
+        window.switchTab = function(event, tabName) {
+            // 모든 탭 숨기기
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // 선택된 탭 보이기
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+            
+            // 버튼 스타일 업데이트
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (event && event.target) {
+                event.target.closest('.tab-btn').classList.add('active');
+            }
+        }
+
+        // DOMContentLoaded 이벤트
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            // 이미 로드된 경우 즉시 실행
+            init();
+        }
+        
+        console.log('📝 스크립트 로드 완료');
+    </script>
+</body>
+</html>

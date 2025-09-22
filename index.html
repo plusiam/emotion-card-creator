@@ -10,7 +10,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="emotions-data.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -107,6 +106,25 @@
         .print-only {
             display: none;
         }
+        
+        /* 스크롤바 스타일링 */
+        .emotion-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .emotion-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .emotion-scroll::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 10px;
+        }
+        
+        .emotion-scroll::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen">
@@ -117,7 +135,7 @@
                 <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                     🎨 감정카드 크리에이터
                 </h1>
-                <p class="text-gray-600 mt-2">64가지 감정으로 나의 마음을 그림으로 표현하고 저장해보세요!</p>
+                <p class="text-gray-600 mt-2">나만의 감정을 그림으로 표현하고 저장해보세요!</p>
                 <p class="text-sm text-orange-600 mt-1">⚠️ 공용 디바이스: 작업 완료 후 반드시 다운로드하세요. 브라우저를 닫으면 데이터가 삭제됩니다.</p>
             </div>
         </div>
@@ -202,17 +220,17 @@
                         
                         <!-- 카테고리 탭 -->
                         <div class="flex flex-wrap gap-1 mb-3">
-                            <button onclick="filterCategory('all')" class="category-btn active px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">전체</button>
-                            <button onclick="filterCategory('기쁨')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😊 기쁨</button>
-                            <button onclick="filterCategory('슬픔')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😢 슬픔</button>
-                            <button onclick="filterCategory('화남')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😡 화남</button>
-                            <button onclick="filterCategory('불안')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😰 불안</button>
-                            <button onclick="filterCategory('놀람')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">😲 놀람</button>
-                            <button onclick="filterCategory('기타')" class="category-btn px-3 py-1 bg-gray-100 rounded-lg text-xs font-medium">💭 기타</button>
+                            <button onclick="filterCategory('all')" class="category-btn active px-2 py-1 bg-gray-100 rounded text-xs font-medium">전체</button>
+                            <button onclick="filterCategory('기쁨')" class="category-btn px-2 py-1 bg-gray-100 rounded text-xs font-medium">😊 기쁨</button>
+                            <button onclick="filterCategory('슬픔')" class="category-btn px-2 py-1 bg-gray-100 rounded text-xs font-medium">😢 슬픔</button>
+                            <button onclick="filterCategory('화남')" class="category-btn px-2 py-1 bg-gray-100 rounded text-xs font-medium">😡 화남</button>
+                            <button onclick="filterCategory('불안')" class="category-btn px-2 py-1 bg-gray-100 rounded text-xs font-medium">😰 불안</button>
+                            <button onclick="filterCategory('놀람')" class="category-btn px-2 py-1 bg-gray-100 rounded text-xs font-medium">😲 놀람</button>
+                            <button onclick="filterCategory('기타')" class="category-btn px-2 py-1 bg-gray-100 rounded text-xs font-medium">💭 기타</button>
                         </div>
                         
                         <!-- 감정 목록 -->
-                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-80 overflow-y-auto p-2 border rounded-lg" id="emotion-selector">
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 max-h-96 overflow-y-auto p-2 border rounded-lg emotion-scroll" id="emotion-selector">
                             <!-- 감정 버튼들이 JavaScript로 생성됩니다 -->
                         </div>
                     </div>
@@ -222,7 +240,7 @@
                         <p class="text-lg font-medium">선택한 감정: 
                             <span id="selected-emotion-text" class="text-xl md:text-2xl font-bold text-purple-600"></span>
                         </p>
-                        <p id="selected-emotion-desc" class="text-gray-600 mt-1"></p>
+                        <p id="selected-emotion-desc" class="text-gray-600 mt-1 text-sm"></p>
                         
                         <!-- 감정 강도 -->
                         <div class="mt-4">
@@ -322,11 +340,24 @@
         <!-- 감정 사전 탭 -->
         <div id="dictionary-tab" class="tab-content hidden">
             <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
-                <h2 class="text-xl md:text-2xl font-bold mb-6 text-gray-800">📚 감정 사전</h2>
-                <p class="text-gray-600 mb-4">64가지 다양한 감정을 알아보고, 나의 감정을 정확히 표현해보세요!</p>
+                <h2 class="text-xl md:text-2xl font-bold mb-2 text-gray-800">📚 감정 사전</h2>
+                <p class="text-gray-600 mb-6">64가지 다양한 감정을 알아보고, 나의 감정을 정확히 표현해보세요!</p>
+                
+                <!-- 감정 카테고리 선택 탭 -->
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <button onclick="filterDictionaryCategory('all')" class="dict-category-btn active px-3 py-2 bg-purple-500 text-white rounded-lg text-sm font-medium">전체 보기</button>
+                    <button onclick="filterDictionaryCategory('기쁨')" class="dict-category-btn px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-purple-100">😊 기쁨</button>
+                    <button onclick="filterDictionaryCategory('슬픔')" class="dict-category-btn px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-purple-100">😢 슬픔</button>
+                    <button onclick="filterDictionaryCategory('화남')" class="dict-category-btn px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-purple-100">😡 화남</button>
+                    <button onclick="filterDictionaryCategory('불안')" class="dict-category-btn px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-purple-100">😰 불안</button>
+                    <button onclick="filterDictionaryCategory('놀람')" class="dict-category-btn px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-purple-100">😲 놀람</button>
+                    <button onclick="filterDictionaryCategory('부끄러움')" class="dict-category-btn px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-purple-100">😳 부끄러움</button>
+                    <button onclick="filterDictionaryCategory('감사')" class="dict-category-btn px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-purple-100">🙏 감사</button>
+                    <button onclick="filterDictionaryCategory('기타')" class="dict-category-btn px-3 py-2 bg-gray-100 rounded-lg text-sm font-medium hover:bg-purple-100">💭 기타</button>
+                </div>
                 
                 <!-- 감정 카테고리별 섹션 -->
-                <div id="emotion-dictionary">
+                <div id="emotion-dictionary" class="max-h-[600px] overflow-y-auto emotion-scroll">
                     <!-- 감정 카드들이 JavaScript로 생성됩니다 -->
                 </div>
             </div>
@@ -362,11 +393,12 @@
                     
                     <!-- 새로운 기능 안내 -->
                     <div class="bg-green-50 rounded-lg p-4">
-                        <h3 class="text-lg font-bold mb-3 text-green-800">✨ 새로운 기능</h3>
+                        <h3 class="text-lg font-bold mb-3 text-green-800">✨ 특별한 기능</h3>
                         <ul class="space-y-2 text-gray-700">
                             <li>📚 <strong>64가지 감정:</strong> 더 다양하고 정확한 감정 표현이 가능합니다.</li>
                             <li>🔍 <strong>감정 검색:</strong> 원하는 감정을 빠르게 찾을 수 있어요.</li>
                             <li>📂 <strong>카테고리별 정렬:</strong> 기쁨, 슬픔, 화남 등 카테고리별로 감정을 찾을 수 있습니다.</li>
+                            <li>📖 <strong>감정 사전:</strong> 모든 감정의 의미를 자세히 알아볼 수 있습니다.</li>
                         </ul>
                     </div>
                 </div>
@@ -375,12 +407,93 @@
     </div>
 
     <script>
-        // 감정 데이터 (emotions-data.js에서 로드됨)
-        const emotions = typeof emotionsData !== 'undefined' ? emotionsData : [];
+        // 64가지 감정 데이터 직접 정의
+        const emotions = [
+            // 기쁨 관련 (14개)
+            { name: '기쁘다', emoji: '😊', desc: '바라는 일이 이루어져 기분이 좋고 즐겁다', color: '#FFEB3B', category: '기쁨' },
+            { name: '행복하다', emoji: '🥰', desc: '충분히 기쁘고 만족을 느끼다', color: '#FFE082', category: '기쁨' },
+            { name: '감격스럽다', emoji: '🥹', desc: '뿌듯하거나 기뻐서 가슴이 뭉클해지다', color: '#FFCA28', category: '기쁨' },
+            { name: '설레다', emoji: '💗', desc: '마음이 들떠서 두근거리다', color: '#FFB6C1', category: '기쁨' },
+            { name: '신나다', emoji: '🤗', desc: '재미있고 즐거워서 기분이 좋다', color: '#FFF176', category: '기쁨' },
+            { name: '뿌듯하다', emoji: '😌', desc: '기쁘고 흐뭇한 느낌으로 가득하다', color: '#FFE57F', category: '기쁨' },
+            { name: '벅차다', emoji: '🥺', desc: '기쁨이나 희망이 넘칠 듯이 가득하다', color: '#FFD740', category: '기쁨' },
+            { name: '즐겁다', emoji: '😄', desc: '마음에 거슬림이 없이 흐뭇하고 기분이 좋다', color: '#FFEE58', category: '기쁨' },
+            { name: '유쾌하다', emoji: '😆', desc: '즐겁고 상쾌하다', color: '#FFF59D', category: '기쁨' },
+            { name: '상쾌하다', emoji: '🌟', desc: '기분이 시원하고 산뜻하다', color: '#FFEB3B', category: '기쁨' },
+            { name: '산뜻하다', emoji: '✨', desc: '기분이나 느낌이 깨끗하고 시원스럽다', color: '#FFF9C4', category: '기쁨' },
+            { name: '흐뭇하다', emoji: '☺️', desc: '마음에 들어 매우 만족스럽다', color: '#FFE082', category: '기쁨' },
+            { name: '통쾌하다', emoji: '🎉', desc: '아주 즐겁고 시원하여 유쾌하다', color: '#FFCA28', category: '기쁨' },
+            { name: '자랑스럽다', emoji: '😤', desc: '남에게 드러내어 뽐낼 만한 데가 있다', color: '#FFD54F', category: '기쁨' },
+            
+            // 슬픔 관련 (11개)
+            { name: '슬프다', emoji: '😢', desc: '서러운 일을 겪거나 불쌍한 일을 보고 울고 싶을 만큼 마음이 아프고 괴롭다', color: '#90CAF9', category: '슬픔' },
+            { name: '외롭다', emoji: '😞', desc: '혼자 있거나 기댈 곳이 없어 허전하고 쓸쓸하다', color: '#81C784', category: '슬픔' },
+            { name: '서럽다', emoji: '😭', desc: '답답하고 슬프다', color: '#64B5F6', category: '슬픔' },
+            { name: '그립다', emoji: '🥺', desc: '보고 싶거나 만나고 싶다. 없어서 필요하고 아쉽다', color: '#7986CB', category: '슬픔' },
+            { name: '쓸쓸하다', emoji: '😔', desc: '마음이 외롭고 슬프다', color: '#5C6BC0', category: '슬픔' },
+            { name: '우울하다', emoji: '😟', desc: '걱정되거나 답답하여 활기가 없다', color: '#3F51B5', category: '슬픔' },
+            { name: '울적하다', emoji: '☁️', desc: '마음이 쓸쓸하고 답답하다', color: '#3949AB', category: '슬픔' },
+            { name: '허무하다', emoji: '💭', desc: '아무 의미나 보람이 없이 허전하고 쓸쓸하다', color: '#303F9F', category: '슬픔' },
+            { name: '허전하다', emoji: '🕳️', desc: '무엇을 잃거나 의지할 곳이 없어진 것같이 서운한 느낌이 있다', color: '#283593', category: '슬픔' },
+            { name: '아프다', emoji: '💔', desc: '마음이 편하지 않고 괴롭다', color: '#1A237E', category: '슬픔' },
+            { name: '속상하다', emoji: '😣', desc: '걱정스럽거나 화나는 일로 마음이 편하지 않고 괴롭다', color: '#4527A0', category: '슬픔' },
+            
+            // 화남 관련 (7개)
+            { name: '화나다', emoji: '😡', desc: '마음에 들지 않거나 기분이 나빠서 불쾌하고 답답한 마음이 생기다', color: '#EF5350', category: '화남' },
+            { name: '짜증스럽다', emoji: '😤', desc: '보기에 못마땅한 데가 있다', color: '#E53935', category: '화남' },
+            { name: '억울하다', emoji: '😠', desc: '아무 잘못 없이 혼나거나 벌을 받아서 속이 상하고 분하다', color: '#D32F2F', category: '화남' },
+            { name: '밉다', emoji: '😒', desc: '마음에 들지 않거나 눈에 거슬리는 느낌이 있다', color: '#C62828', category: '화남' },
+            { name: '원망스럽다', emoji: '😑', desc: '못마땅하게 여겨 탓하거나 불만을 가지고 미워하다', color: '#B71C1C', category: '화남' },
+            { name: '불쾌하다', emoji: '😣', desc: '못마땅하여 기분이 좋지 않다', color: '#FF5722', category: '화남' },
+            { name: '답답하다', emoji: '😩', desc: '일이 잘되지 않아서 애가 타다. 비좁거나 꽉 막힌 느낌이 있어 마음에 여유가 없다', color: '#FF6347', category: '화남' },
+            
+            // 불안/두려움 관련 (6개)
+            { name: '불안하다', emoji: '😰', desc: '걱정이 되어 마음이 편하지 않다', color: '#CE93D8', category: '불안' },
+            { name: '걱정스럽다', emoji: '😟', desc: '걱정이 되어 편하지 않다', color: '#BA68C8', category: '불안' },
+            { name: '무섭다', emoji: '😨', desc: '걱정하는 일이 벌어질까 불안하다. 위험이나 위협으로 느껴져 마음이 불안하다', color: '#AB47BC', category: '불안' },
+            { name: '두렵다', emoji: '😱', desc: '어떤 대상을 무서워하며 걱정이 되어 불안하다', color: '#9C27B0', category: '불안' },
+            { name: '초조하다', emoji: '😬', desc: '애가 타서 마음이 조마조마하다', color: '#8E24AA', category: '불안' },
+            { name: '조마조마하다', emoji: '😟', desc: '앞으로 닥칠 일이 걱정되어 마음을 놓을 수 없고 불안하다', color: '#7B1FA2', category: '불안' },
+            
+            // 놀람 관련 (5개)
+            { name: '놀라다', emoji: '😲', desc: '뜻밖의 일이나 무서움에 가슴이 두근거리다. 신기한 것을 보고 매우 감동하다', color: '#FF9800', category: '놀람' },
+            { name: '당황스럽다', emoji: '😳', desc: '놀라거나 다급하여 어떻게 해야 할지 모르다', color: '#FB8C00', category: '놀람' },
+            { name: '어이없다', emoji: '😮', desc: '너무 엄청나거나 뜻밖의 일을 당해서 기가 막히다', color: '#F57C00', category: '놀람' },
+            { name: '얼떨떨하다', emoji: '😵', desc: '뜻밖의 일로 당황하여 정신이 없고 멍하다', color: '#EF6C00', category: '놀람' },
+            { name: '신기하다', emoji: '🤯', desc: '믿을 수 없을 정도로 놀랍고 이상하다', color: '#E65100', category: '놀람' },
+            
+            // 부끄러움 관련 (3개)
+            { name: '부끄럽다', emoji: '😳', desc: '잘못을 저질러서 창피하다. 용기가 없어 수줍다', color: '#FFCDD2', category: '부끄러움' },
+            { name: '창피하다', emoji: '🫣', desc: '떳떳하지 못한 일로 몹시 부끄럽다', color: '#EF9A9A', category: '부끄러움' },
+            { name: '미안하다', emoji: '😅', desc: '다른 사람에 대해 마음이 편하지 않고 부끄럽다', color: '#E57373', category: '부끄러움' },
+            
+            // 감사 관련 (2개)
+            { name: '고맙다', emoji: '🙏', desc: '남이 친절하게 대해 주거나 도움을 주어서 흐뭇하고 즐겁다', color: '#A5D6A7', category: '감사' },
+            { name: '다행스럽다', emoji: '😌', desc: '생각보다 일이 잘되어 운이 좋은 듯하다. 마음이 놓이고 흡족하다', color: '#81C784', category: '감사' },
+            
+            // 기타 감정 (16개)
+            { name: '괴롭다', emoji: '😖', desc: '아프고 힘들다. 몸이나 마음이 편하지 않고 고통스럽다', color: '#BCAAA4', category: '기타' },
+            { name: '궁금하다', emoji: '🤔', desc: '모르는 것을 알고 싶어 몹시 답답하다', color: '#FFB74D', category: '기타' },
+            { name: '나쁘다', emoji: '😕', desc: '마음이나 기분이 좋지 않다', color: '#A1887F', category: '기타' },
+            { name: '괜찮다', emoji: '😐', desc: '걱정이 되거나 문제가 될 것이 없다. 나쁘지 않고 보통 이상으로 좋다', color: '#E0E0E0', category: '기타' },
+            { name: '따분하다', emoji: '😑', desc: '재미가 없어 지루하고 심심하다', color: '#BDBDBD', category: '기타' },
+            { name: '무겁다', emoji: '😞', desc: '마음이 유쾌하지 않고 활발한 기운이 없다', color: '#9E9E9E', category: '기타' },
+            { name: '부담스럽다', emoji: '😓', desc: '어떤 일이 짐처럼 느껴지고 불편하다', color: '#757575', category: '기타' },
+            { name: '불쌍하다', emoji: '😢', desc: '남의 처지가 딱해서 가슴 아프다', color: '#616161', category: '기타' },
+            { name: '불편하다', emoji: '😐', desc: '마음이 편하지 않고 괴롭다', color: '#424242', category: '기타' },
+            { name: '불행하다', emoji: '😔', desc: '좋지 않은 일로 인해 괴롭거나 슬프다. 행복하지 못하다', color: '#212121', category: '기타' },
+            { name: '안쓰럽다', emoji: '😥', desc: '가엾고 불쌍하다', color: '#78909C', category: '기타' },
+            { name: '안타깝다', emoji: '😟', desc: '마음대로 되지 않거나 보기에 딱하여 가슴 아프고 답답하다', color: '#607D8B', category: '기타' },
+            { name: '좋다', emoji: '😊', desc: '기쁘고 만족스럽다', color: '#8BC34A', category: '기타' },
+            { name: '찝찝하다', emoji: '😕', desc: '만족스럽지 못하거나 걱정스러운 일로 마음에 걸리는 데가 있다', color: '#546E7A', category: '기타' },
+            { name: '편안하다', emoji: '😌', desc: '몸과 마음이 힘들지 않고 좋다. 걱정이 없어 좋다', color: '#B0BEC5', category: '기타' },
+            { name: '후련하다', emoji: '😤', desc: '답답한 것이 풀려서 마음이 시원하다', color: '#CFD8DC', category: '기타' }
+        ];
         
         // 현재 표시되는 감정 목록
         let currentEmotions = emotions;
         let currentCategory = 'all';
+        let currentDictCategory = 'all';
 
         // 전역 변수들
         let canvas, ctx;
@@ -413,7 +526,7 @@
                 console.warn('html2canvas 라이브러리가 로드되지 않았습니다.');
             }
             
-            console.log('초기화 시작');
+            console.log('초기화 시작 - 감정 개수:', emotions.length);
             initCanvas();
             createEmotionButtons();
             createColorPalette();
@@ -511,10 +624,10 @@
             
             currentEmotions.forEach((emotion, index) => {
                 const btn = document.createElement('button');
-                btn.className = 'emotion-card p-2 bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-md hover:shadow-lg text-center';
+                btn.className = 'emotion-card p-1 bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-md hover:shadow-lg text-center';
                 btn.innerHTML = `
-                    <div class="text-xl mb-1">${emotion.emoji}</div>
-                    <div class="text-xs font-medium">${emotion.name}</div>
+                    <div class="text-lg">${emotion.emoji}</div>
+                    <div class="text-[10px] font-medium">${emotion.name}</div>
                 `;
                 btn.onclick = (e) => selectEmotion(emotion, e);
                 btn.setAttribute('data-name', emotion.name);
@@ -565,6 +678,19 @@
             }
             
             createEmotionButtons();
+        };
+        
+        // 감정 사전 카테고리 필터
+        window.filterDictionaryCategory = function(category) {
+            currentDictCategory = category;
+            document.querySelectorAll('.dict-category-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-purple-500', 'text-white');
+                btn.classList.add('bg-gray-100');
+            });
+            event.target.classList.remove('bg-gray-100');
+            event.target.classList.add('active', 'bg-purple-500', 'text-white');
+            
+            createEmotionDictionary();
         };
 
         // 색상 팔레트 생성
@@ -1091,7 +1217,9 @@
             
             // 카테고리별로 그룹화
             const categories = {};
-            emotions.forEach(emotion => {
+            let displayEmotions = currentDictCategory === 'all' ? emotions : emotions.filter(e => e.category === currentDictCategory);
+            
+            displayEmotions.forEach(emotion => {
                 const category = emotion.category || '기타';
                 if (!categories[category]) {
                     categories[category] = [];
@@ -1106,7 +1234,7 @@
                 
                 // 카테고리 제목
                 const title = document.createElement('h3');
-                title.className = 'text-lg font-bold mb-4 text-gray-700';
+                title.className = 'text-lg font-bold mb-4 text-gray-700 sticky top-0 bg-white py-2';
                 const categoryEmoji = {
                     '기쁨': '😊', '슬픔': '😢', '화남': '😡', 
                     '불안': '😰', '놀람': '😲', '부끄러움': '😳',
@@ -1121,7 +1249,7 @@
                 
                 categories[category].forEach(emotion => {
                     const card = document.createElement('div');
-                    card.className = 'bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 shadow-lg hover:shadow-xl transition';
+                    card.className = 'bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 shadow-lg hover:shadow-xl transition cursor-pointer hover:scale-105';
                     card.style.borderLeft = `5px solid ${emotion.color}`;
                     card.innerHTML = `
                         <div class="flex items-start gap-3">
@@ -1132,6 +1260,17 @@
                             </div>
                         </div>
                     `;
+                    
+                    // 카드 클릭 시 감정 선택
+                    card.onclick = () => {
+                        selectedEmotion = emotion;
+                        alert(`'${emotion.name}' 감정이 선택되었습니다.\n카드 만들기 탭으로 이동하여 그림을 그려보세요!`);
+                        switchTab(null, 'create');
+                        document.getElementById('selected-emotion-display').classList.remove('hidden');
+                        document.getElementById('selected-emotion-text').textContent = `${emotion.emoji} ${emotion.name}`;
+                        document.getElementById('selected-emotion-desc').textContent = emotion.desc;
+                    };
+                    
                     grid.appendChild(card);
                 });
                 

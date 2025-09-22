@@ -369,6 +369,14 @@
 
         // 초기화 함수
         document.addEventListener('DOMContentLoaded', function() {
+            // 라이브러리 로드 확인
+            if (typeof window.jspdf === 'undefined') {
+                console.warn('jsPDF 라이브러리가 로드되지 않았습니다. PDF 기능이 제한될 수 있습니다.');
+            }
+            if (typeof html2canvas === 'undefined') {
+                console.warn('html2canvas 라이브러리가 로드되지 않았습니다.');
+            }
+            
             console.log('초기화 시작');
             initCanvas();
             createEmotionButtons();
@@ -394,6 +402,13 @@
             });
         });
 
+        // 라이브러리 로드 완료 확인
+        window.addEventListener('load', function() {
+            if (typeof window.jspdf === 'undefined') {
+                console.error('PDF 라이브러리 로딩 실패');
+            }
+        });
+
         // 캔버스 초기화
         function initCanvas() {
             canvas = document.getElementById('drawingCanvas');
@@ -411,23 +426,46 @@
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mouseout', stopDrawing);
             
-            canvas.addEventListener('touchstart', handleTouch);
-            canvas.addEventListener('touchmove', handleTouch);
-            canvas.addEventListener('touchend', stopDrawing);
-            canvas.addEventListener('touchstart', (e) => e.preventDefault());
+            // 터치 이벤트
+            canvas.addEventListener('touchstart', handleTouch, { passive: false });
+            canvas.addEventListener('touchmove', handleTouch, { passive: false });
+            canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
             
             saveHistory();
         }
 
-        // 터치 이벤트 처리
+        // 캔버스 좌표 계산 개선
+        function getMousePos(canvas, e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            return {
+                x: (e.clientX - rect.left) * scaleX,
+                y: (e.clientY - rect.top) * scaleY
+            };
+        }
+
+        // 터치 이벤트 처리 개선
         function handleTouch(e) {
             e.preventDefault();
+            if (!e.touches || !e.touches[0]) return;
+            
             const touch = e.touches[0];
-            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 'mousemove', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            canvas.dispatchEvent(mouseEvent);
+            const rect = canvas.getBoundingClientRect();
+            
+            if (e.type === 'touchstart') {
+                const pos = getMousePos(canvas, touch);
+                startDrawingAtPos(pos.x, pos.y);
+            } else if (e.type === 'touchmove') {
+                const pos = getMousePos(canvas, touch);
+                drawAtPos(pos.x, pos.y);
+            }
+        }
+
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            stopDrawing();
         }
 
         // 감정 버튼 생성
@@ -479,7 +517,7 @@
             }
         }
 
-        // 글로벌 함수들
+        // 글로벌 함수들 - window 객체에 등록
         window.toggleTag = function(event, category, value) {
             const button = event.target.closest('.tag-btn');
             
@@ -511,13 +549,30 @@
             canvas.style.cursor = tool === 'eraser' ? 'grab' : 'crosshair';
         };
 
+        // 색상 설정 - window 객체에 등록
+        window.setColor = function(color, event) {
+            currentColor = color;
+            currentTool = 'pen';
+            
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            canvas.style.cursor = 'crosshair';
+        };
+
         // 그리기 시작
         function startDrawing(e) {
+            const pos = getMousePos(canvas, e);
+            startDrawingAtPos(pos.x, pos.y);
+        }
+
+        function startDrawingAtPos(x, y) {
             isDrawing = true;
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-            
             ctx.beginPath();
             ctx.moveTo(x, y);
             ctx.lineWidth = currentSize;
@@ -526,10 +581,12 @@
         // 그리기
         function draw(e) {
             if (!isDrawing) return;
-            
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            const pos = getMousePos(canvas, e);
+            drawAtPos(pos.x, pos.y);
+        }
+
+        function drawAtPos(x, y) {
+            if (!isDrawing) return;
             
             if (currentTool === 'eraser') {
                 ctx.globalCompositeOperation = 'destination-out';
@@ -556,20 +613,6 @@
                 ctx.beginPath();
                 ctx.globalCompositeOperation = 'source-over';
                 saveHistory();
-            }
-        }
-
-        // 색상 설정
-        function setColor(color, event) {
-            currentColor = color;
-            currentTool = 'pen';
-            
-            document.querySelectorAll('.color-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (event && event.target) {
-                event.target.classList.add('active');
             }
         }
 
@@ -631,6 +674,7 @@
                 img.src = e.target.result;
             }
             reader.readAsDataURL(file);
+            event.target.value = ''; // 파일 입력 초기화
         };
 
         // 갤러리에 저장
@@ -640,24 +684,29 @@
                 return;
             }
             
-            const card = {
-                id: Date.now(),
-                emotion: selectedEmotion.name,
-                emoji: selectedEmotion.emoji,
-                desc: selectedEmotion.desc,
-                image: canvas.toDataURL('image/jpeg', 0.9),
-                intensity: document.getElementById('emotion-intensity').value,
-                tags: { ...selectedTags },
-                situation: document.getElementById('situation-desc').value,
-                studentName: document.getElementById('student-name').value,
-                studentClass: document.getElementById('student-class').value,
-                date: new Date().toISOString()
-            };
-            
-            sessionGallery.push(card);
-            alert('갤러리에 추가되었습니다!');
-            loadGallery();
-            resetForm();
+            try {
+                const card = {
+                    id: Date.now(),
+                    emotion: selectedEmotion.name,
+                    emoji: selectedEmotion.emoji,
+                    desc: selectedEmotion.desc,
+                    image: canvas.toDataURL('image/jpeg', 0.9),
+                    intensity: document.getElementById('emotion-intensity').value,
+                    tags: { ...selectedTags },
+                    situation: document.getElementById('situation-desc').value,
+                    studentName: document.getElementById('student-name').value,
+                    studentClass: document.getElementById('student-class').value,
+                    date: new Date().toISOString()
+                };
+                
+                sessionGallery.push(card);
+                alert('갤러리에 추가되었습니다!');
+                loadGallery();
+                resetForm();
+            } catch (error) {
+                console.error('갤러리 저장 오류:', error);
+                alert('저장 중 오류가 발생했습니다.');
+            }
         };
 
         // 폼 초기화
@@ -752,12 +801,17 @@
                 return;
             }
             
-            const cardCanvas = createCardCanvas();
-            const link = document.createElement('a');
-            const studentName = document.getElementById('student-name').value || '학생';
-            link.download = `감정카드_${selectedEmotion.name}_${studentName}_${Date.now()}.jpg`;
-            link.href = cardCanvas.toDataURL('image/jpeg', 0.9);
-            link.click();
+            try {
+                const cardCanvas = createCardCanvas();
+                const link = document.createElement('a');
+                const studentName = document.getElementById('student-name').value || '학생';
+                link.download = `감정카드_${selectedEmotion.name}_${studentName}_${Date.now()}.jpg`;
+                link.href = cardCanvas.toDataURL('image/jpeg', 0.9);
+                link.click();
+            } catch (error) {
+                console.error('이미지 다운로드 오류:', error);
+                alert('다운로드 중 오류가 발생했습니다.');
+            }
         };
 
         // PDF 다운로드
@@ -767,18 +821,28 @@
                 return;
             }
             
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            const cardCanvas = createCardCanvas();
+            if (typeof window.jspdf === 'undefined') {
+                alert('PDF 라이브러리가 로드되지 않았습니다. 페이지를 새로고침 해주세요.');
+                return;
+            }
             
-            const imgData = cardCanvas.toDataURL('image/jpeg', 1.0);
-            const imgWidth = 180;
-            const imgHeight = (cardCanvas.height / cardCanvas.width) * imgWidth;
-            
-            pdf.addImage(imgData, 'JPEG', 15, 15, imgWidth, imgHeight);
-            
-            const studentName = document.getElementById('student-name').value || '학생';
-            pdf.save(`감정카드_${selectedEmotion.name}_${studentName}.pdf`);
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+                const cardCanvas = createCardCanvas();
+                
+                const imgData = cardCanvas.toDataURL('image/jpeg', 1.0);
+                const imgWidth = 180;
+                const imgHeight = (cardCanvas.height / cardCanvas.width) * imgWidth;
+                
+                pdf.addImage(imgData, 'JPEG', 15, 15, imgWidth, imgHeight);
+                
+                const studentName = document.getElementById('student-name').value || '학생';
+                pdf.save(`감정카드_${selectedEmotion.name}_${studentName}.pdf`);
+            } catch (error) {
+                console.error('PDF 다운로드 오류:', error);
+                alert('PDF 생성 중 오류가 발생했습니다.');
+            }
         };
 
         // 인쇄
@@ -788,33 +852,38 @@
                 return;
             }
             
-            const cardCanvas = createCardCanvas();
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>감정카드 인쇄</title>
-                    <style>
-                        @media print {
-                            body { margin: 0; }
-                            img { max-width: 100%; height: auto; }
-                        }
-                        body {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            min-height: 100vh;
-                            margin: 0;
-                            background: #f3f4f6;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <img src="${cardCanvas.toDataURL()}" />
-                    <script>window.print(); setTimeout(() => window.close(), 500);<\/script>
-                </body>
-                </html>
-            `);
+            try {
+                const cardCanvas = createCardCanvas();
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                    <head>
+                        <title>감정카드 인쇄</title>
+                        <style>
+                            @media print {
+                                body { margin: 0; }
+                                img { max-width: 100%; height: auto; }
+                            }
+                            body {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                min-height: 100vh;
+                                margin: 0;
+                                background: #f3f4f6;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <img src="${cardCanvas.toDataURL()}" />
+                        <script>window.print(); setTimeout(() => window.close(), 500);<\/script>
+                    </body>
+                    </html>
+                `);
+            } catch (error) {
+                console.error('인쇄 오류:', error);
+                alert('인쇄 중 오류가 발생했습니다.');
+            }
         };
 
         // 갤러리 로드
@@ -861,11 +930,16 @@
 
         // 갤러리 카드 다운로드
         window.downloadGalleryCard = function(index) {
-            const card = sessionGallery[index];
-            const link = document.createElement('a');
-            link.download = `감정카드_${card.emotion}_${card.studentName || '학생'}.jpg`;
-            link.href = card.image;
-            link.click();
+            try {
+                const card = sessionGallery[index];
+                const link = document.createElement('a');
+                link.download = `감정카드_${card.emotion}_${card.studentName || '학생'}.jpg`;
+                link.href = card.image;
+                link.click();
+            } catch (error) {
+                console.error('갤러리 카드 다운로드 오류:', error);
+                alert('다운로드 중 오류가 발생했습니다.');
+            }
         };
 
         // 갤러리 카드 삭제
@@ -883,38 +957,48 @@
                 return;
             }
             
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            
-            for (let i = 0; i < sessionGallery.length; i++) {
-                const card = sessionGallery[i];
-                
-                if (i > 0) {
-                    pdf.addPage();
-                }
-                
-                pdf.addImage(card.image, 'JPEG', 15, 30, 180, 120);
-                
-                pdf.setFontSize(12);
-                let yPos = 160;
-                
-                pdf.text(`감정: ${card.emotion}`, 15, yPos);
-                yPos += 10;
-                
-                if (card.studentName) {
-                    pdf.text(`작성자: ${card.studentClass || ''} ${card.studentName}`, 15, yPos);
-                    yPos += 10;
-                }
-                
-                if (card.intensity) {
-                    pdf.text(`감정 강도: ${card.intensity}/10`, 15, yPos);
-                    yPos += 10;
-                }
-                
-                pdf.text(`날짜: ${new Date(card.date).toLocaleDateString('ko-KR')}`, 15, yPos);
+            if (typeof window.jspdf === 'undefined') {
+                alert('PDF 라이브러리가 로드되지 않았습니다. 페이지를 새로고침 해주세요.');
+                return;
             }
             
-            pdf.save(`감정카드_모음_${new Date().toLocaleDateString('ko-KR')}.pdf`);
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+                
+                for (let i = 0; i < sessionGallery.length; i++) {
+                    const card = sessionGallery[i];
+                    
+                    if (i > 0) {
+                        pdf.addPage();
+                    }
+                    
+                    pdf.addImage(card.image, 'JPEG', 15, 30, 180, 120);
+                    
+                    pdf.setFontSize(12);
+                    let yPos = 160;
+                    
+                    pdf.text(`감정: ${card.emotion}`, 15, yPos);
+                    yPos += 10;
+                    
+                    if (card.studentName) {
+                        pdf.text(`작성자: ${card.studentClass || ''} ${card.studentName}`, 15, yPos);
+                        yPos += 10;
+                    }
+                    
+                    if (card.intensity) {
+                        pdf.text(`감정 강도: ${card.intensity}/10`, 15, yPos);
+                        yPos += 10;
+                    }
+                    
+                    pdf.text(`날짜: ${new Date(card.date).toLocaleDateString('ko-KR')}`, 15, yPos);
+                }
+                
+                pdf.save(`감정카드_모음_${new Date().toLocaleDateString('ko-KR')}.pdf`);
+            } catch (error) {
+                console.error('전체 PDF 다운로드 오류:', error);
+                alert('PDF 생성 중 오류가 발생했습니다.');
+            }
         };
 
         // 감정 사전 생성
